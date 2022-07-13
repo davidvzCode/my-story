@@ -25,8 +25,10 @@ module.exports = {
         dialect: 'postgres',
        //Mysql
        //dialect: 'mysql',
-        ssl: {
-            rejectUnauthorized: false
+        dialectOptions : {
+            ssl : {
+                rejectUnauthorized: false
+            }
         }
     }
 }
