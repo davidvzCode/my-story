@@ -1,12 +1,12 @@
 const express = require('express');
 const routerApi = require('./routes');
 const cors = require('cors');
-const { logErrors, errorHandler, boomErrorHandler } = require('./middleware/error.hadler');
+const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middleware/error.hadler');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-const whiteList = ['http://localhost:8080', 'http://myapp.com']
+//const whiteList = ['http://localhost:8080', 'http://myapp.com']
 
 /* const options = {
     origin: (origin, callback) => {
@@ -31,9 +31,9 @@ app.get('/', (req, res) => {
 routerApi(app);
 
 app.use(logErrors);
+app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
-
 
 
 app.listen(port, () => {

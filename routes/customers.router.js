@@ -1,16 +1,16 @@
 const express = require('express');
 
-const UsersService = require('../services/users.services');
+const CustomersService = require('../services/customers.services');
 const validatorHadler = require('../middleware/validator.handler');
-const { createUserSchema, getUserSchema, updateUserSchema } = require('../schemas/user.schema');
+const { createCustomerSchema, getCustomerSchema, updateCustomerSchema } = require('../schemas/constumer.schema');
 
 const router = express.Router();
 
-const service = new UsersService();
+const service = new CustomersService();
 
 router.get('/', async (req, res) => {
-    const users = await service.find();
-    res.json(users);
+    const customer = await service.find();
+    res.json(customer);
  });
 
 
@@ -20,12 +20,12 @@ router.get('/filter', async (req, res) => {
 
 
 router.get('/:id', 
-validatorHadler(getUserSchema, 'params'),
+validatorHadler(getCustomerSchema, 'params'),
     async(req, res, next) => {
         try {
             const { id } = req.params;
-            const users = await service.findOne(id);
-            res.json(users);
+            const customer = await service.findOne(id);
+            res.json(customer);
         } catch (error) {
             next(error);
         }
@@ -34,12 +34,12 @@ validatorHadler(getUserSchema, 'params'),
 
 
 router.post('/', 
-validatorHadler(createUserSchema, 'body'),
+validatorHadler(createCustomerSchema, 'body'),
     async (req, res, next) => {
         try {
             const body  = req.body;
-            const users = await service.create(body);
-            res.status(201).json(users);
+            const customer = await service.create(body);
+            res.status(201).json(customer);
         } catch (error) {
             next(error);
         }
@@ -47,14 +47,14 @@ validatorHadler(createUserSchema, 'body'),
 );
 
 router.patch('/:id', 
-validatorHadler(getUserSchema, 'params'),
-validatorHadler(updateUserSchema, 'body'),
+validatorHadler(getCustomerSchema, 'params'),
+validatorHadler(updateCustomerSchema, 'body'),
     async(req, res, next) => {
         try {
             const { id } = req.params;
             const  body  = req.body;
-            const user = await service.update(id, body);
-            res.status(201).json(user);
+            const customer = await service.update(id, body);
+            res.status(201).json(customer);
         } catch (error) {
             next(error);
         }
@@ -62,12 +62,12 @@ validatorHadler(updateUserSchema, 'body'),
 );
 
 router.delete('/:id', 
-validatorHadler(getUserSchema, 'params'),
+validatorHadler(getCustomerSchema, 'params'),
     async (req, res, next) => {
         try {
             const { id } = req.params;
-            const user = await service.delete(id);
-            res.status(201).json(user);
+            const customer = await service.delete(id);
+            res.status(201).json(customer);
         } catch (error) {
             next(error);
         }
