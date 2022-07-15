@@ -30,15 +30,19 @@ const OrderSchema = {
 	total:{
 		type: DataTypes.VIRTUAL,
 		get() {
-			if(this.items.length > 0){
-				return this.items.reduce((total, item)=>{
-					return total + (item.price * item.OrderProduct.amount);
-				},0);
-			} 
+			if(this.items) {
+				console.log('existen items en la orden');
+				if(this.items.length > 0){
+					return this.items.reduce((total, item)=>{
+						return total + (item.price * item.OrderProduct.amount);
+					},0);
+				} 
+			}
 			return 0;
 		}
 	}
 };
+
 
 class Order extends Model {
 	static associate(models) {

@@ -1,6 +1,7 @@
 const express = require('express');
-
+const passport = require('passport');
 const OrderService = require('../services/order.services');
+
 const validatorHadler = require('../middleware/validator.handler');
 const {
 	getOrderSchema,
@@ -35,13 +36,17 @@ validatorHadler(getOrderSchema, 'params'),
 	}
 );
 
-router.post(
-	'/',
-	validatorHadler(createOrderSchema, 'body'),
+router.post('/',
+passport.authenticate('jwt', { session: false }),
+validatorHadler(createOrderSchema, 'body'),
 	async (req, res, next) => {
 		try {
-			const body = req.body;
-			const newOrder = await service.create(body);
+			const user = req.user;
+			//const body = req.body;
+			const customer = await service.findByUser(user.sub);
+			const newOrder = await service.create({
+				customerId: customer[0].dataValues.customerId
+			});
 			res.status(201).json(newOrder);
 		} catch (error) {
 			next(error);

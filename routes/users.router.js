@@ -8,6 +8,7 @@ const router = express.Router();
 
 const service = new UsersService();
 
+
 router.get('/', async (req, res) => {
     const users = await service.find();
     res.json(users);
